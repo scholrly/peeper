@@ -30,7 +30,7 @@ def __tree(url, html):
 def __base(tree, url=None):
   for base in tree.xpath('//base'):
     href = base.attrib['href']
-    if bool(href): return __urljoin(href, url);
+    if href: return __urljoin(href, url);
   return url
 
 def __urljoin(href, url=None):

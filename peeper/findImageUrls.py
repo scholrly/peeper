@@ -30,7 +30,7 @@ def __tree(url, html):
   else:
     return etree.fromstring(text=html, parser=parser, base_url=url)
 
-def __base(tree, url=None):
+def __base(tree, url):
   for base in tree.xpath('//base'):
     href = base.attrib['href']
     if href: return __urljoin(href, url);

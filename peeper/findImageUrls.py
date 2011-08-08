@@ -32,8 +32,8 @@ def __tree(url, html):
 
 def __base(tree, url):
   for base in tree.xpath('//base'):
-    href = base.attrib['href']
-    if href: return __urljoin(href, url);
+    if 'href' in base.attrib:
+      return __urljoin(base.attrib['href'], url)
   return url
 
 def __urljoin(href, url=None):

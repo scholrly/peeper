@@ -1,5 +1,4 @@
 argparse>=1.2.1
 lxml>=2.3
 mechanize>=0.2.5
-nose>=1.0.0
 wsgiref>=0.1.2

@@ -35,3 +35,6 @@ def test_one_with_base_and_url():
     html='<base href="best/index.html"/>' \
          '<img src="im-in-ur-computer-stealing-ur-megahurtz.png">'),
     ['https://localhost/lolcats/best/im-in-ur-computer-stealing-ur-megahurtz.png'])
+
+def test_base_without_href():
+  eq_(findImageUrls(html='<base target="_blank"><img src="xyzzy">'), ['xyzzy'])

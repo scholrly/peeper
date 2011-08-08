@@ -28,3 +28,10 @@ def test_one_with_base():
     html='<base href="https://localhost/lolcats/best.html"/>' \
          '<img src="invisible_sandwich.gif">'),
     ['https://localhost/lolcats/invisible_sandwich.gif'])
+
+def test_one_with_base_and_url():
+  eq_(findImageUrls(
+    url='https://localhost/lolcats/index.html',
+    html='<base href="best/index.html"/>' \
+         '<img src="im-in-ur-computer-stealing-ur-megahurtz.png">'),
+    ['https://localhost/lolcats/best/im-in-ur-computer-stealing-ur-megahurtz.png'])

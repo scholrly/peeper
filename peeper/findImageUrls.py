@@ -1,25 +1,50 @@
 import argparse, mechanize
 from lxml import etree
 from twisted.python.util import uniquify
+from urlparse import urljoin
 
-def findImageUrls(url, duplicate=False, alphabetical=False):
-  browser = mechanize.Browser()
-  response = browser.open(url)
+def findImageUrls(url=None, html=None, duplicate=False, alphabetical=False):
+  assert (url is not None) | (html is not None)
+  if html == "": return []
+  urls = __findImageUrls(url, html)
+  if not duplicate: urls = uniquify(urls)
+  if alphabetical: urls.sort()
+  return urls
+
+def __findImageUrls(url, html):
+  tree = __tree(url, html)
+  base = __base(tree, url)
+  return [
+    urljoin(base, x.attrib['src'])
+    for x in tree.xpath('//img')
+    if 'src' in x.attrib ]
+
+def __tree(url, html):
   parser = etree.HTMLParser()
-  tree = etree.parse(response, parser)
-  images = tree.xpath('//img')
-  imagePaths = map(lambda x: x.attrib['src'], images)
-  if not duplicate: imagePaths = uniquify(imagePaths)
-  if alphabetical: imagePaths.sort()
-  return imagePaths
+  if html is None:
+    response = mechanize.Browser().open(url)
+    return etree.parse(source=response, parser=parser, base_url=url)
+  else:
+    return etree.fromstring(text=html, parser=parser, base_url=url)
 
-def findImageUrlsArgParser():
+def __base(tree, url=None):
+  for base in tree.xpath('//base'):
+    href = base.attrib['href']
+    if bool(href): return __urljoin(href, url);
+  return url
+
+def __urljoin(href, url=None):
+  if url is None: return href
+  else: return urljoin(url, href)
+
+def __findImageUrlsArgParser():
   parser = argparse.ArgumentParser()
   parser.add_argument('url', type=str)
   parser.add_argument('-d', '--duplicate', action='store_true')
   parser.add_argument('-a', '--alphabetical', action='store_true')
+  parser.add_argument('-h', '--html')
   return parser
 
 if __name__ == '__main__':
-  args = findImageUrlsArgParser().parse_args()
+  args = __findImageUrlsArgParser().parse_args()
   print '\n'.join(findImageUrls(**vars(args)))

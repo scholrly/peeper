@@ -11,6 +11,13 @@ def test_img_without_src():
 def test_one():
   eq_(findImageUrls(html='<img src="a">'), ['a'])
 
+def test_two_duplicate_removed():
+  eq_(findImageUrls(html='<img src="a" title="x"/><img src="a" width=24>'), ['a'])
+
+def test_two_duplicate():
+  eq_(findImageUrls(html='<img src="a" title="x"/><img src="a" width=24>',
+    duplicate=True), ['a', 'a'])
+
 def test_one_with_url():
   eq_(findImageUrls(url='http://scholr.ly/authors/index.html',
     html='<img src="erdos.jpg">'),

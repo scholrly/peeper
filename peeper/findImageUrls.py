@@ -1,6 +1,5 @@
 import argparse, mechanize
 from lxml import etree
-from twisted.python.util import uniquify
 from urlparse import urljoin
 
 def findImageUrls(url=None, html=None, duplicate=False, alphabetical=False):
@@ -10,6 +9,10 @@ def findImageUrls(url=None, html=None, duplicate=False, alphabetical=False):
   if not duplicate: urls = uniquify(urls)
   if alphabetical: urls.sort()
   return urls
+
+def uniquify(seq):
+  seen = set()
+  return [x for x in seq if x not in seen and not seen.add(x)]
 
 def __findImageUrls(url, html):
   tree = __tree(url, html)

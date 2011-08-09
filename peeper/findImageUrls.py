@@ -42,10 +42,10 @@ def __urljoin(href, url=None):
 
 def __findImageUrlsArgParser():
   parser = argparse.ArgumentParser()
-  parser.add_argument('url', type=str)
+  parser.add_argument('-u', '--url', type=str)
   parser.add_argument('-d', '--duplicate', action='store_true')
   parser.add_argument('-a', '--alphabetical', action='store_true')
-  parser.add_argument('-h', '--html')
+  parser.add_argument('-x', '--html')
   return parser
 
 if __name__ == '__main__':

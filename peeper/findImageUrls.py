@@ -3,7 +3,7 @@ from lxml import etree
 from urlparse import urljoin
 
 def findImageUrls(url=None, html=None, duplicate=False, alphabetical=False):
-  assert (url is not None) | (html is not None)
+  assert url is not None or html is not None
   if html == "": return []
   urls = __findImageUrls(url, html)
   if not duplicate: urls = uniquify(urls)

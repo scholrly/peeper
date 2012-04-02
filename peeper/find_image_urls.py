@@ -2,10 +2,10 @@ import argparse, mechanize
 from lxml import etree
 from urlparse import urljoin
 
-def findImageUrls(url=None, html=None, duplicate=False, alphabetical=False):
+def find_image_urls(url=None, html=None, duplicate=False, alphabetical=False):
   assert url is not None or html is not None
   if html == "": return []
-  urls = __findImageUrls(url, html)
+  urls = __find_image_urls(url, html)
   if not duplicate: urls = uniquify(urls)
   if alphabetical: urls.sort()
   return urls
@@ -14,7 +14,7 @@ def uniquify(seq):
   seen = set()
   return [x for x in seq if x not in seen and not seen.add(x)]
 
-def __findImageUrls(url, html):
+def __find_image_urls(url, html):
   tree = __tree(url, html)
   base = __base(tree, url)
   return [
@@ -40,7 +40,7 @@ def __urljoin(href, url=None):
   if url is None: return href
   else: return urljoin(url, href)
 
-def __findImageUrlsArgParser():
+def __find_image_urlsArgParser():
   parser = argparse.ArgumentParser()
   parser.add_argument('-u', '--url', type=str)
   parser.add_argument('-d', '--duplicate', action='store_true')
@@ -49,5 +49,5 @@ def __findImageUrlsArgParser():
   return parser
 
 if __name__ == '__main__':
-  args = __findImageUrlsArgParser().parse_args()
-  print '\n'.join(findImageUrls(**vars(args)))
+  args = __find_image_urlsArgParser().parse_args()
+  print '\n'.join(find_image_urls(**vars(args)))
